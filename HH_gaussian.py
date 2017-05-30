@@ -11,6 +11,8 @@ gaussian_random_dev = sp.random.normal(mu, sigma, 1000)
 
 pos_gaussian = [x for x in gaussian_random_dev if x >0] # positive values only
 pos_gaussian = sp.sort(pos_gaussian)
+pos_gaussian = pos_gaussian[:9]
+
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""
 
@@ -148,23 +150,22 @@ if __name__ == '__main__':
     fig.set_tight_layout(True)
 
     plt.title('Hodgkin-Huxley - Gaussian')
-    line = plt.plot(runner.t, main, 'k')
+    line, = ax.plot(runner.t, main, 'k')
     plt.ylabel('Membrane Potential (mV)')
     plt.xlabel('Time (ms)')
-    plt.show()
-    # def update(i):
-    #     label = 'timestep {0}'.format(i)
-    #     print(label)
+    def update(i):
+        label = 'Time (ms), timestep {0}'.format(i)
+        print(label)
+        print(pos_gaussian[i])
 
-    #     runner.t = sp.multiply(runner.t, i)
-    #     # Update the line and the axes (with a new xlabel). Return a tuple of
-    #     # "artists" that have to be redrawn for this frame.
-    #     ax.set_xlabel(label)
-    #     return runner.t, ax
-    # Writer = animation.writers['ffmpeg']
-    # writer = Writer(fps=2, metadata=dict(artist='Fernando Espinosa'))
-    # anim = FuncAnimation(fig, update, frames=sp.arange(1, 6), interval=200)
-    # anim.save('HH_Gaussian.mp4', writer=writer)
-    # clip = mp.VideoFileClip('HH_even_linear.mp4')
-    # clip.write_gif('HH_Gaussian.gif')
-    # # plt.show()
+        line.set_xdata(runner.t*i)
+        # Update the line and the axes (with a new xlabel). Return a tuple of
+        # "artists" that have to be redrawn for this frame.
+        ax.set_xlabel(label)
+        return runner.t, ax
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=5, metadata=dict(artist='Fernando Espinosa'))
+    anim = FuncAnimation(fig, update, frames=sp.arange(9), interval=100)
+    anim.save('HH_Gaussian.mp4', writer=writer)
+    clip = mp.VideoFileClip('HH_Gaussian.mp4')
+    clip.write_gif('HH_Gaussian.gif')

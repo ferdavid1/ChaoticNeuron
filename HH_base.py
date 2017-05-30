@@ -148,7 +148,7 @@ if __name__ == '__main__':
     plt.xlabel('Time (ms)')
 
     def update(i):
-        label = 'timestep {0}'.format(i)
+        label = 'Time (ms), timestep {0}'.format(i)
         print(label)
 
         line.set_xdata(runner.t*i)
