@@ -1,6 +1,8 @@
 import scipy as sp
 import pylab as plt
 from scipy.integrate import odeint
+import seaborn
+from matplotlib.animation import FuncAnimation
 
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""
@@ -26,7 +28,7 @@ class HodgkinHuxley():
     E_L  = -77.387
     """Leak Nernst reversal potentials, in mV"""
 
-    t = sp.arange(1, 20.0, 0.01)
+    t = None
     """ The time to integrate over """
 
     def alpha_m(self, V):
@@ -129,17 +131,30 @@ class HodgkinHuxley():
         ina = self.I_Na(V, m, h)
         ik = self.I_K(V, n)
         il = self.I_L(V)
-
-        plt.figure()
-
-        # plt.subplot(4,1,1)
-        plt.title('Hodgkin-Huxley Neuron')
-        plt.plot(self.t, V, 'k')
-        plt.ylabel('V (mV)')
-
-        plt.show()
+        return V
 
 if __name__ == '__main__':
     runner = HodgkinHuxley()
-    runner.Main()
+    runner.t = sp.arange(1, 20.0, 0.1)
+    main = runner.Main()
+    fig, ax = plt.subplots()
+    fig.set_tight_layout(True)
 
+    plt.title('Hodgkin-Huxley - Linear Evenly spaced')
+    line = plt.plot(runner.t, main, 'k')
+    plt.ylabel('Membrane Potential (mV)')
+    plt.xlabel('Time (ms)')
+
+    def update(i):
+        label = 'timestep {0}'.format(i)
+        print(label)
+
+        runner.t = sp.arange(1, 20.0, 0.1*i)
+        # Update the line and the axes (with a new xlabel). Return a tuple of
+        # "artists" that have to be redrawn for this frame.
+        ax.set_xlabel(label)
+        return runner.t, ax
+
+    anim = FuncAnimation(fig, update, frames=sp.arange(1, 6), interval=200)
+    anim.save('HH_even_linear.gif', dpi=80, writer='ffmpeg')
+    #plt.show()
