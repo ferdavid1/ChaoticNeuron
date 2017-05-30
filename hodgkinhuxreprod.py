@@ -3,6 +3,7 @@ import pylab as plt
 from scipy.integrate import odeint
 import seaborn
 from matplotlib.animation import FuncAnimation
+import matplotlib.animation as animation
 
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""
@@ -149,12 +150,13 @@ if __name__ == '__main__':
         label = 'timestep {0}'.format(i)
         print(label)
 
-        runner.t = sp.arange(1, 20.0, 0.1*i)
+        runner.t = sp.arange(1, 20.0, 0.1+i)
         # Update the line and the axes (with a new xlabel). Return a tuple of
         # "artists" that have to be redrawn for this frame.
         ax.set_xlabel(label)
         return runner.t, ax
-
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=15, metadata=dict(artist='Fernando Espinosa'), bitrate=1800)
     anim = FuncAnimation(fig, update, frames=sp.arange(1, 6), interval=200)
-    anim.save('HH_even_linear.gif', dpi=80, writer='ffmpeg')
-    #plt.show()
+    anim.save('HH_even_linear.mp4', writer=writer)
+    # plt.show()
