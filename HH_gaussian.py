@@ -6,6 +6,11 @@ from matplotlib.animation import FuncAnimation
 import matplotlib.animation as animation
 import moviepy.editor as mp 
 
+mu, sigma = 0, 1
+gaussian_random_dev = sp.random.normal(mu, sigma, 1000)
+
+pos_gaussian = [x for x in gaussian_random_dev if x >0] # positive values only
+pos_gaussian = sp.sort(pos_gaussian)
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""
 
@@ -137,29 +142,29 @@ class HodgkinHuxley():
 
 if __name__ == '__main__':
     runner = HodgkinHuxley()
-    runner.t = sp.arange(1, 20.0, 0.1)
+    runner.t = pos_gaussian
     main = runner.Main()
     fig, ax = plt.subplots()
     fig.set_tight_layout(True)
 
-    plt.title('Hodgkin-Huxley - Linear Evenly spaced')
+    plt.title('Hodgkin-Huxley - Gaussian')
     line = plt.plot(runner.t, main, 'k')
     plt.ylabel('Membrane Potential (mV)')
     plt.xlabel('Time (ms)')
+    plt.show()
+    # def update(i):
+    #     label = 'timestep {0}'.format(i)
+    #     print(label)
 
-    def update(i):
-        label = 'timestep {0}'.format(i)
-        print(label)
-
-        runner.t = sp.arange(1, 20.0, 0.1+i)
-        # Update the line and the axes (with a new xlabel). Return a tuple of
-        # "artists" that have to be redrawn for this frame.
-        ax.set_xlabel(label)
-        return runner.t, ax
-    Writer = animation.writers['ffmpeg']
-    writer = Writer(fps=2, metadata=dict(artist='Fernando Espinosa'))
-    anim = FuncAnimation(fig, update, frames=sp.arange(1, 6), interval=200)
-    anim.save('HH_even_linear.mp4', writer=writer)
-    clip = mp.VideoFileClip('HH_even_linear.mp4')
-    clip.write_gif('HH_even_linear.gif')
-    # plt.show()
+    #     runner.t = sp.multiply(runner.t, i)
+    #     # Update the line and the axes (with a new xlabel). Return a tuple of
+    #     # "artists" that have to be redrawn for this frame.
+    #     ax.set_xlabel(label)
+    #     return runner.t, ax
+    # Writer = animation.writers['ffmpeg']
+    # writer = Writer(fps=2, metadata=dict(artist='Fernando Espinosa'))
+    # anim = FuncAnimation(fig, update, frames=sp.arange(1, 6), interval=200)
+    # anim.save('HH_Gaussian.mp4', writer=writer)
+    # clip = mp.VideoFileClip('HH_even_linear.mp4')
+    # clip.write_gif('HH_Gaussian.gif')
+    # # plt.show()
