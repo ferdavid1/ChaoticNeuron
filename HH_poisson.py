@@ -6,12 +6,11 @@ from matplotlib.animation import FuncAnimation
 import matplotlib.animation as animation
 import moviepy.editor as mp 
 
-mu, sigma = 0, 1
-gaussian_random_dev = sp.random.normal(mu, sigma, 9)
+Poisson_random_dev = sp.random.poisson(1,10)
 
-pos_gaussian = abs(gaussian_random_dev) # positive values only
-pos_gaussian = sp.sort(pos_gaussian)
-pos_gaussian = sp.multiply(pos_gaussian, 10)
+pos_Poisson = abs(Poisson_random_dev) # positive values only
+pos_Poisson = sp.sort(pos_Poisson)
+pos_Poisson = sp.multiply(pos_Poisson, 10)
 
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""
@@ -144,19 +143,19 @@ class HodgkinHuxley():
 
 if __name__ == '__main__':
     runner = HodgkinHuxley()
-    runner.t = pos_gaussian
+    runner.t = pos_Poisson
     main = runner.Main()
     fig, ax = plt.subplots()
     fig.set_tight_layout(True)
 
-    plt.title('Hodgkin-Huxley - Gaussian')
+    plt.title('Hodgkin-Huxley - Poisson')
     line, = ax.plot(runner.t, main, 'k')
     plt.ylabel('Membrane Potential (mV)')
     plt.xlabel('Time (ms)')
     def update(i):
         label = 'Time (ms), timestep {0}'.format(i)
         print(label)
-        print(pos_gaussian[i])
+        print(pos_Poisson[i])
 
         line.set_xdata(runner.t*i)
         # Update the line and the axes (with a new xlabel). Return a tuple of
@@ -165,7 +164,7 @@ if __name__ == '__main__':
         return runner.t, ax
     Writer = animation.writers['ffmpeg']
     writer = Writer(fps=5, metadata=dict(artist='Fernando Espinosa'))
-    anim = FuncAnimation(fig, update, frames=sp.arange(1, len(pos_gaussian)), interval=100)
-    anim.save('HH_Gaussian.mp4', writer=writer)
-    clip = mp.VideoFileClip('HH_Gaussian.mp4')
-    clip.write_gif('HH_Gaussian.gif')
+    anim = FuncAnimation(fig, update, frames=sp.arange(1, len(pos_Poisson)), interval=100)
+    anim.save('HH_Poisson.mp4', writer=writer)
+    clip = mp.VideoFileClip('HH_Poisson.mp4')
+    clip.write_gif('HH_Poisson.gif')
