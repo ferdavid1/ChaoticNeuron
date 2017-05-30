@@ -4,6 +4,7 @@ from scipy.integrate import odeint
 import seaborn
 from matplotlib.animation import FuncAnimation
 import matplotlib.animation as animation
+import moviepy.editor as mp 
 
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""
@@ -156,7 +157,9 @@ if __name__ == '__main__':
         ax.set_xlabel(label)
         return runner.t, ax
     Writer = animation.writers['ffmpeg']
-    writer = Writer(fps=15, metadata=dict(artist='Fernando Espinosa'), bitrate=1800)
+    writer = Writer(fps=2, metadata=dict(artist='Fernando Espinosa'))
     anim = FuncAnimation(fig, update, frames=sp.arange(1, 6), interval=200)
     anim.save('HH_even_linear.mp4', writer=writer)
+    clip = mp.VideoFileClip('HH_even_linear.mp4')
+    clip.write_gif('HH_even_linear.gif')
     # plt.show()
