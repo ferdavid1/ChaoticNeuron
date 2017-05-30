@@ -157,9 +157,9 @@ if __name__ == '__main__':
         ax.set_xlabel(label)
         return runner.t, ax
     Writer = animation.writers['ffmpeg']
-    writer = Writer(fps=15, metadata=dict(artist='Fernando Espinosa'))
-    anim = FuncAnimation(fig, update, frames=sp.arange(1, 10), interval=200)
+    writer = Writer(fps=5, metadata=dict(artist='Fernando Espinosa'))
+    anim = FuncAnimation(fig, update, frames=sp.arange(1, 10), interval=100)
     anim.save('HH_even_linear.mp4', writer=writer)
     clip = mp.VideoFileClip('HH_even_linear.mp4')
     clip.write_gif('HH_even_linear.gif')
-    plt.show()
+    # plt.show()
