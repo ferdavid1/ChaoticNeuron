@@ -10,7 +10,6 @@ Poisson_random_dev = sp.random.poisson(1,10)
 
 pos_Poisson = abs(Poisson_random_dev) # positive values only
 pos_Poisson = sp.sort(pos_Poisson)
-pos_Poisson = sp.multiply(pos_Poisson, 10)
 
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""

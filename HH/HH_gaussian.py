@@ -11,7 +11,6 @@ gaussian_random_dev = sp.random.normal(mu, sigma, 9)
 
 pos_gaussian = abs(gaussian_random_dev) # positive values only
 pos_gaussian = sp.sort(pos_gaussian)
-pos_gaussian = sp.multiply(pos_gaussian, 10)
 
 class HodgkinHuxley():
     """Full Hodgkin-Huxley Model implemented in Python"""
@@ -152,9 +151,9 @@ if __name__ == '__main__':
     plt.title('Hodgkin-Huxley - Gaussian')
     line, = ax.plot(runner.t, main, 'k')
     plt.ylabel('Membrane Potential (mV)')
-    plt.xlabel('Time (ms)')
+    plt.xlabel('Time (s)')
     def update(i):
-        label = 'Time (ms), timestep {0}'.format(i)
+        label = 'Time (s), timestep {0}'.format(i)
         print(label)
         print(pos_gaussian[i])
 
