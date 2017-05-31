@@ -69,21 +69,18 @@ if __name__ == '__main__':
     plt.ylabel('Membrane Potential (V)')
     plt.xlabel('Time (s)')
     def update(i):
-        runner.tstep = runner.tstep*i
-        main = runner.Main()
         label = 'Time (s), timestep {0}'.format(i)
         print(label)
-        line.set_xdata(main[0]*i)
+        line.set_xdata([x*i for x in main[0]])
+        print(len(main[0]*i))
         # Update the line and the axes (with a new xlabel). Return a tuple of
         # "artists" that have to be redrawn for this frame.
         ax.set_xlabel(label)
         plt.show()
         return main[0], ax
-    for x in range(10):
-        update(x)
-    # Writer = animation.writers['ffmpeg']
-    # writer = Writer(fps=5, metadata=dict(artist='Fernando Espinosa'))
-    # anim = FuncAnimation(fig, update, frames=np.arange(1, 10), interval=100)
-    # anim.save('Fitz_even_linear.mp4', writer=writer)
-    # clip = mp.VideoFileClip('Fitz_even_linear.mp4')
-    # clip.write_gif('Fitz_base.gif')
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=5, metadata=dict(artist='Fernando Espinosa'))
+    anim = FuncAnimation(fig, update, frames=np.arange(1, 10), interval=100)
+    anim.save('Fitz_even_linear.mp4', writer=writer)
+    clip = mp.VideoFileClip('Fitz_even_linear.mp4')
+    clip.write_gif('Fitz_base.gif')

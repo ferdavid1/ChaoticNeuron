@@ -1,17 +1,22 @@
 import time
 import pylab
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn
+from matplotlib.animation import FuncAnimation
+import matplotlib.animation as animation
+import moviepy.editor as mp 
 
 mu, sigma = 0, 1
 gaussian_random_dev = np.random.normal(mu, sigma, 9)
 
 pos_gaussian = abs(gaussian_random_dev) # positive values only
 pos_gaussian = np.sort(pos_gaussian)
-print(pos_gaussian)
 
-def fitzhughNagumo(tstep, t_end):
+class fitzhughNagumo():
     #time step
-    tstep = tstep
+    tstep = None
+    t_end = 20
     #initial values of v and w
     v = 2.0 
     w = 0.0 
@@ -31,21 +36,54 @@ def fitzhughNagumo(tstep, t_end):
     t_now = 0 
     ts.append(t_now) 
     vs.append(v) 
-    while(t_now < t_end):
-        #calculate the rate of change
-        dv = t_sc*(v - v**3/3 - w)
-        dw = t_sc*(1.0/eps*(a*v+b-c*w))
-        #calculate the value of v based on the rate of change
-        v = v+tstep*dv 
-        w = w+tstep*dw     
-        t_now = t_now+tstep
-        
-        ts.append(t_now) 
-        vs.append(v)
-        
-    pylab.plot(ts, np.multiply(vs, 1000))
-    pylab.xlabel('Time (s)')
-    pylab.ylabel('Voltage (mV)') 
-    pylab.show()
-for x in range(10):
-	fitzhughNagumo(0.1*x, 20)
+    def Main(self):
+        t_now = self.t_now
+        t_end = self.t_end
+        t_sc = self.t_sc
+        vs = self.vs
+        ts = self.ts 
+        tstep = self.tstep 
+        v = self.v
+        w = self.w
+        eps = self.eps
+        a,b,c = self.a,self.b,self.c
+        while(t_now < t_end):
+            #calculate the rate of change
+            dv = t_sc*(v - v**3/3 - w)
+            dw = t_sc*(1.0/eps*(a*v+b-c*w))
+            #calculate the value of v based on the rate of change
+            v = v+tstep*dv 
+            w = w+tstep*dw     
+            t_now = t_now+tstep
+            
+            ts.append(t_now) 
+            vs.append(v)
+        return ts, vs
+
+if __name__ == '__main__':
+    runner = fitzhughNagumo()
+    runner.tstep = .01
+    main = runner.Main()
+    fig, ax = plt.subplots()
+    fig.set_tight_layout(True)
+
+    plt.title('Fitzhugh-Nagumo - Even increments')
+    line, = ax.plot(main[0], main[1], 'k')
+    plt.ylabel('Membrane Potential (V)')
+    plt.xlabel('Time (s)')
+    def update(i):
+        label = 'Time (s), timestep {0}'.format(i)
+        print(label)
+        line.set_xdata([x*i for x in main[0]])
+        print(len(main[0]*i))
+        # Update the line and the axes (with a new xlabel). Return a tuple of
+        # "artists" that have to be redrawn for this frame.
+        ax.set_xlabel(label)
+        plt.show()
+        return main[0], ax
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=5, metadata=dict(artist='Fernando Espinosa'))
+    anim = FuncAnimation(fig, update, frames=np.arange(1, 10), interval=100)
+    anim.save('Fitz_even_linear.mp4', writer=writer)
+    clip = mp.VideoFileClip('Fitz_even_linear.mp4')
+    clip.write_gif('Fitz_base.gif')
