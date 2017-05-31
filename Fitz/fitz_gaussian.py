@@ -9,7 +9,6 @@ pos_gaussian = abs(gaussian_random_dev) # positive values only
 pos_gaussian = np.sort(pos_gaussian)
 print(pos_gaussian)
 
-
 def fitzhughNagumo(tstep, t_end):
     #time step
     tstep = tstep
@@ -44,9 +43,9 @@ def fitzhughNagumo(tstep, t_end):
         ts.append(t_now) 
         vs.append(v)
         
-    pylab.plot(ts*100, vs)
-    pylab.xlabel('time in milliseconds')
-    pylab.ylabel('Voltage in Volts') 
+    pylab.plot(ts, np.multiply(vs, 1000))
+    pylab.xlabel('Time (s)')
+    pylab.ylabel('Voltage (mV)') 
     pylab.show()
 for x in range(10):
 	fitzhughNagumo(0.1*x, 20)

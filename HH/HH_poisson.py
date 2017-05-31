@@ -150,9 +150,9 @@ if __name__ == '__main__':
     plt.title('Hodgkin-Huxley - Poisson')
     line, = ax.plot(runner.t, main, 'k')
     plt.ylabel('Membrane Potential (mV)')
-    plt.xlabel('Time (ms)')
+    plt.xlabel('Time (s)')
     def update(i):
-        label = 'Time (ms), timestep {0}'.format(i)
+        label = 'Time (s), timestep {0}'.format(i)
         print(label)
         print(pos_Poisson[i])
 

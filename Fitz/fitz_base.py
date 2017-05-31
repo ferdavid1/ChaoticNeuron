@@ -39,9 +39,9 @@ def fitzhughNagumo(tstep, t_end):
         ts.append(t_now) 
         vs.append(v)
         
-    pylab.plot(np.multiply(, vs)
-    pylab.xlabel('time in seconds')
-    pylab.ylabel('Voltage in Volts') 
+    pylab.plot(ts, np.multiply(vs, 1000))
+    pylab.xlabel('Time (s)')
+    pylab.ylabel('Voltage (mV)') 
     pylab.show()
 for x in range(10):
 	fitzhughNagumo(0.1*x, 20)
