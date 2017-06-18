@@ -4,8 +4,8 @@ from scipy.integrate import odeint
 import seaborn
 from matplotlib.animation import FuncAnimation
 import matplotlib.animation as animation
-import moviepy.editor as mp 
-
+import moviepy.editor as mp
+ 
 mu, sigma = 0, 1
 gaussian_random_dev = sp.random.normal(mu, sigma, 9)
 
