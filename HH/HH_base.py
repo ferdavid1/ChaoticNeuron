@@ -137,7 +137,7 @@ class HodgkinHuxley():
 
 if __name__ == '__main__':
     runner = HodgkinHuxley()
-    runner.t = sp.arange(1, 20.0, 0.1)
+    runner.t = sp.arange(0, 2, 0.1)
     main = runner.Main()
     fig, ax = plt.subplots()
     fig.set_tight_layout(True)
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     plt.xlabel('Time (ms)')
 
     def update(i):
-        label = 'Time (ms), timestep {0}'.format(i)
+        label = 'Time (s), timestep {0}'.format(i)
         print(label)
 
         line.set_xdata(runner.t*i)
