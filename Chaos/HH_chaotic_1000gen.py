@@ -144,30 +144,7 @@ if __name__ == '__main__':
     pops = np.array(pops)
     pops.flatten()
     pops = np.sort(pops)
-        
-    # g1 = []; g2 = []; g3 = []; g4 = []; g5 = []; g6 = [];
-    # gen_count = 0
-    # for gen in pops:
-    #     gen_count += 1
-    #     if gen_count == 1:
-    #         for y in gen:
-    #             g1.append(y)
-    #     if gen_count == 2:
-    #         for y in gen:
-    #             g2.append(y)
-    #     if gen_count == 3:
-    #         for y in gen:
-    #             g3.append(y)
-    #     if gen_count == 4:
-    #         for y in gen:
-    #             g4.append(y)
-    #     if gen_count == 5:
-    #         for y in gen:
-    #             g5.append(y)
-    #     if gen_count == 6:
-    #         for y in gen:
-    #             g6.append(y)
-    # generations = [g2, g3, g4, g5, g6] # we're gonna ignore the first generation as they all have the same values
+    
     count = 0
     for x in range(1, len(pops)):
         count +=1
@@ -191,13 +168,12 @@ if __name__ == '__main__':
             # "artists" that have to be redrawn for this frame.
             ax.set_xlabel(label)
             return runner.t, ax
-        print(runner.t)
         Writer = animation.writers['ffmpeg']
         writer = Writer(fps=5, metadata=dict(artist='Fernando Espinosa'))
-        anim = FuncAnimation(fig, update, frames=sp.arange(1, len(generations[x])), interval=100)
-        anim.save('HH_chaotic' + str(count) + '.mp4', writer=writer)
-        clip = mp.VideoFileClip('HH_chaotic' + str(count) + '.mp4')
+        anim = FuncAnimation(fig, update, frames=sp.arange(1, len(pops[x])), interval=100)
+        anim.save('mp4s/HH_chaotic' + str(count) + '.mp4', writer=writer)
+        clip = mp.VideoFileClip('mp4s/HH_chaotic' + str(count) + '.mp4')
         try:
-            clip.write_gif('HH_chaotic' + str(count) + '.mp4')
+            clip.write_gif('gifs/HH_chaotic' + str(count) + '.gif')
         except TypeError:
             pass

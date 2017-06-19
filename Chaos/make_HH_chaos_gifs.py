@@ -3,4 +3,4 @@ import os
 
 for vid in os.listdir('mp4s'):
 	clip = mp.VideoFileClip('mp4s/' + vid)
-	clip.write_gif(vid.strip('.mp4') + '.gif')
+	clip.write_gif('gifs/' + vid.strip('.mp4') + '.gif')
